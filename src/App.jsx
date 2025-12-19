@@ -9,6 +9,8 @@ import SignInPage from './components/SignInPage';
 import SignUpPage from './components/SignUpPage';
 import JobsPage from './components/JobsPage';
 import EventsPage from './components/EventsPage';
+import PlacementsPage from './components/PlacementsPage';
+import PricingPage from './components/PricingPage';
 
 function App() {
     // Authentication state
@@ -83,13 +85,17 @@ function App() {
     const renderView = () => {
         switch (view) {
             case 'landing':
-                return <LandingPage onStart={() => navigateTo('dashboard')} onNavigate={navigateTo} />;
+                return <LandingPage onStart={() => navigateTo('dashboard')} onNavigate={navigateTo} currentUser={currentUser} />;
             case 'dashboard':
                 return <Dashboard onNavigate={navigateTo} currentUser={currentUser} />;
             case 'jobs':
                 return <JobsPage onNavigate={navigateTo} currentUser={currentUser} />;
             case 'events':
                 return <EventsPage onNavigate={navigateTo} currentUser={currentUser} />;
+            case 'placements':
+                return <PlacementsPage onNavigate={navigateTo} currentUser={currentUser} />;
+            case 'pricing':
+                return <PricingPage onNavigate={navigateTo} currentUser={currentUser} />;
             case 'contact':
                 return <AboutContactPage onNavigate={navigateTo} targetSection="contact" currentUser={currentUser} />;
             case 'about':
@@ -112,7 +118,7 @@ function App() {
                     </React.Fragment>
                 );
             default:
-                return <LandingPage onStart={() => navigateTo('dashboard')} />;
+                return <LandingPage onStart={() => navigateTo('dashboard')} onNavigate={navigateTo} currentUser={currentUser} />;
         }
     };
 

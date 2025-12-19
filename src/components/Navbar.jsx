@@ -13,6 +13,14 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
             onNavigate('jobs');
         } else if (target === 'events') {
             onNavigate('events');
+        } else if (target === 'placements') {
+            onNavigate('placements');
+        } else if (target === 'pricing') {
+            onNavigate('pricing');
+        } else if (target === 'signin') {
+            onNavigate('signin');
+        } else if (target === 'signup') {
+            onNavigate('signup');
         }
     };
 
@@ -28,44 +36,91 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
                 </div>
                 {!isAuthPage && (
                     <ul className="nav-links">
-                        <li
-                            className={currentView === 'jobs' ? 'active-link' : ''}
-                            onClick={() => handleNavClick('jobs')}
-                        >
-                            {isRecruiter ? 'Manage Jobs' : 'Find Jobs'}
-                        </li>
-                        <li
-                            className={currentView === 'events' ? 'active-link' : ''}
-                            onClick={() => handleNavClick('events')}
-                        >
-                            Events
-                        </li>
-                        <li
-                            className={currentView === 'about' ? 'active-link' : ''}
-                            onClick={() => handleNavClick('about')}
-                        >
-                            About
-                        </li>
-                        <li
-                            className={currentView === 'contact' ? 'active-link' : ''}
-                            onClick={() => handleNavClick('contact')}
-                        >
-                            Contact
-                        </li>
-                        <li className="nav-btn" onClick={() => handleNavClick('home')}>Home</li>
-                        <li
-                            className={currentView === 'account' ? 'active-link account-icon' : 'account-icon'}
-                            onClick={() => onNavigate('account')}
-                            title="Account"
-                        >
-                            <div className="nav-user-info">
-                                <span className="nav-user-name">{currentUser?.name?.split(' ')[0]}</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                            </div>
-                        </li>
+                        {!currentUser ? (
+                            // Landing Page Nav for unauthenticated users
+                            <>
+                                <li
+                                    className={currentView === 'placements' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('placements')}
+                                >
+                                    Placements
+                                </li>
+                                <li
+                                    className={currentView === 'about' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('about')}
+                                >
+                                    About
+                                </li>
+                                <li
+                                    className={currentView === 'contact' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('contact')}
+                                >
+                                    Contact
+                                </li>
+                                <li
+                                    className={currentView === 'pricing' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('pricing')}
+                                >
+                                    Pricing
+                                </li>
+                                <li className="nav-btn-outline" onClick={() => handleNavClick('signin')}>Sign In</li>
+                                <li className="nav-btn" onClick={() => handleNavClick('signup')}>Sign Up</li>
+                            </>
+                        ) : (
+                            // Full Nav for authenticated users
+                            <>
+                                <li
+                                    className={currentView === 'jobs' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('jobs')}
+                                >
+                                    {isRecruiter ? 'Manage Jobs' : 'Find Jobs'}
+                                </li>
+                                <li
+                                    className={currentView === 'placements' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('placements')}
+                                >
+                                    Placements
+                                </li>
+                                <li
+                                    className={currentView === 'events' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('events')}
+                                >
+                                    Events
+                                </li>
+                                <li
+                                    className={currentView === 'about' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('about')}
+                                >
+                                    About
+                                </li>
+                                <li
+                                    className={currentView === 'contact' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('contact')}
+                                >
+                                    Contact
+                                </li>
+                                <li
+                                    className={currentView === 'pricing' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('pricing')}
+                                >
+                                    Pricing
+                                </li>
+                                <li className="nav-btn" onClick={() => handleNavClick('home')}>Home</li>
+                                <li
+                                    className={currentView === 'account' ? 'active-link account-icon' : 'account-icon'}
+                                    onClick={() => onNavigate('account')}
+                                    title="Account"
+                                >
+                                    <div className="nav-user-info">
+                                        <span className="nav-user-name">{currentUser?.name?.split(' ')[0]}</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </div>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 )}
             </div>

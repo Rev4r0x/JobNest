@@ -45,7 +45,7 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
 
     return (
         <div className="account-container fade-in">
-            <Navbar onNavigate={onNavigate} currentView="account" />
+            <Navbar onNavigate={onNavigate} currentView="account" currentUser={initialUser} />
 
             <div className="account-content-wrapper" style={{ marginTop: '80px', padding: '2rem' }}>
                 <div className="account-header">
