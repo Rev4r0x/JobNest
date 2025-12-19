@@ -7,7 +7,7 @@ import RegistrationModal from './RegistrationModal';
 import JobApplicationModal from './JobApplicationModal';
 import { jobs, events } from '../data';
 
-const Dashboard = ({ onNavigate }) => {
+const Dashboard = ({ onNavigate, currentUser }) => {
     // Search & Filter State
     const [searchTerm, setSearchTerm] = useState('');
     // Filter State
@@ -69,7 +69,7 @@ const Dashboard = ({ onNavigate }) => {
     return (
         <div className="dashboard-container">
             {/* Pass onNavigate and currentView */}
-            <Navbar onNavigate={onNavigate} currentView="dashboard" />
+            <Navbar onNavigate={onNavigate} currentView="dashboard" currentUser={currentUser} />
 
             <header className="app-header dashboard-header">
                 <h1>Welcome to JobNest</h1>

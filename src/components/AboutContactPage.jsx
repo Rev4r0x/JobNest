@@ -7,7 +7,7 @@ import AnimatedCounter from './AnimatedCounter';
 import heroImg from '../assets/about-hero.png';
 import journeyImg from '../assets/journey.png';
 
-const AboutContactPage = ({ onNavigate, targetSection }) => {
+const AboutContactPage = ({ onNavigate, targetSection, currentUser }) => {
 
     useEffect(() => {
         // Scroll to the specific section when targetSection changes or on mount
@@ -23,7 +23,7 @@ const AboutContactPage = ({ onNavigate, targetSection }) => {
 
     return (
         <div className="dashboard-container">
-            <Navbar onNavigate={onNavigate} currentView={targetSection} />
+            <Navbar onNavigate={onNavigate} currentView={targetSection} currentUser={currentUser} />
 
             <div className="main-content" style={{ marginTop: '2rem' }}>
 

@@ -85,15 +85,15 @@ function App() {
             case 'landing':
                 return <LandingPage onStart={() => navigateTo('dashboard')} onNavigate={navigateTo} />;
             case 'dashboard':
-                return <Dashboard onNavigate={navigateTo} />;
+                return <Dashboard onNavigate={navigateTo} currentUser={currentUser} />;
             case 'jobs':
-                return <JobsPage onNavigate={navigateTo} />;
+                return <JobsPage onNavigate={navigateTo} currentUser={currentUser} />;
             case 'events':
-                return <EventsPage onNavigate={navigateTo} />;
+                return <EventsPage onNavigate={navigateTo} currentUser={currentUser} />;
             case 'contact':
-                return <AboutContactPage onNavigate={navigateTo} targetSection="contact" />;
+                return <AboutContactPage onNavigate={navigateTo} targetSection="contact" currentUser={currentUser} />;
             case 'about':
-                return <AboutContactPage onNavigate={navigateTo} targetSection="about" />;
+                return <AboutContactPage onNavigate={navigateTo} targetSection="about" currentUser={currentUser} />;
             case 'signin':
                 return <SignInPage onNavigate={navigateTo} onSignIn={handleSignIn} />;
             case 'signup':

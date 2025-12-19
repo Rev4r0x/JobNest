@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Navbar = ({ onNavigate, currentView }) => {
+const Navbar = ({ onNavigate, currentView, currentUser }) => {
 
     const handleNavClick = (target) => {
         if (target === 'home') {
@@ -18,12 +18,13 @@ const Navbar = ({ onNavigate, currentView }) => {
 
     // Check if we're on auth pages
     const isAuthPage = currentView === 'signin' || currentView === 'signup';
+    const isRecruiter = currentUser?.role === 'recruiter';
 
     return (
         <nav className="navbar">
             <div className="navbar-container">
                 <div className="nav-brand" onClick={() => handleNavClick('home')}>
-                    JobNest
+                    JobNest {isRecruiter ? <span className="role-badge">Recruiter</span> : ''}
                 </div>
                 {!isAuthPage && (
                     <ul className="nav-links">
@@ -31,7 +32,7 @@ const Navbar = ({ onNavigate, currentView }) => {
                             className={currentView === 'jobs' ? 'active-link' : ''}
                             onClick={() => handleNavClick('jobs')}
                         >
-                            Jobs
+                            {isRecruiter ? 'Manage Jobs' : 'Find Jobs'}
                         </li>
                         <li
                             className={currentView === 'events' ? 'active-link' : ''}
@@ -57,10 +58,13 @@ const Navbar = ({ onNavigate, currentView }) => {
                             onClick={() => onNavigate('account')}
                             title="Account"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
+                            <div className="nav-user-info">
+                                <span className="nav-user-name">{currentUser?.name?.split(' ')[0]}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
                         </li>
                     </ul>
                 )}

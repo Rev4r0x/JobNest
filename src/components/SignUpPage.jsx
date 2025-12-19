@@ -6,7 +6,8 @@ const SignUpPage = ({ onNavigate, onSignIn }) => {
         name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        accountType: 'seeker' // Default to job seeker
     });
     const [error, setError] = useState('');
     const [passwordStrength, setPasswordStrength] = useState('');
@@ -22,6 +23,13 @@ const SignUpPage = ({ onNavigate, onSignIn }) => {
         if (name === 'password') {
             checkPasswordStrength(value);
         }
+    };
+
+    const handleRoleSelect = (role) => {
+        setFormData(prev => ({
+            ...prev,
+            accountType: role
+        }));
     };
 
     const checkPasswordStrength = (password) => {
@@ -70,10 +78,14 @@ const SignUpPage = ({ onNavigate, onSignIn }) => {
             name: formData.name,
             email: formData.email,
             password: formData.password,
-            title: 'New User',
+            role: formData.accountType, // Store the selected role
+            title: formData.accountType === 'seeker' ? 'Job Seeker' : 'Recruiter',
             location: 'Not specified',
             bio: 'Welcome to JobNest!',
-            skills: []
+            skills: formData.accountType === 'seeker' ? [] : undefined,
+            company: formData.accountType === 'recruiter' ? { name: '', position: '' } : undefined,
+            applications: formData.accountType === 'seeker' ? [] : undefined,
+            postedJobs: formData.accountType === 'recruiter' ? [] : undefined
         };
 
         users.push(newUser);
@@ -100,10 +112,29 @@ const SignUpPage = ({ onNavigate, onSignIn }) => {
                 <div className="auth-card fade-in">
                     <div className="auth-header">
                         <h1>Create Account</h1>
-                        <p>Join JobNest to find your dream job</p>
+                        <p>Join JobNest to find your dream job or hire talent</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="auth-form">
+                        <div className="role-selector">
+                            <button
+                                type="button"
+                                className={`role-btn ${formData.accountType === 'seeker' ? 'active' : ''}`}
+                                onClick={() => handleRoleSelect('seeker')}
+                            >
+                                <span className="role-icon">👤</span>
+                                <span>Job Seeker</span>
+                            </button>
+                            <button
+                                type="button"
+                                className={`role-btn ${formData.accountType === 'recruiter' ? 'active' : ''}`}
+                                onClick={() => handleRoleSelect('recruiter')}
+                            >
+                                <span className="role-icon">💼</span>
+                                <span>Recruiter</span>
+                            </button>
+                        </div>
+
                         {error && <div className="auth-error">{error}</div>}
 
                         <div className="form-group">

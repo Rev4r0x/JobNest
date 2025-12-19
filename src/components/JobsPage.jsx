@@ -5,7 +5,7 @@ import Footer from './Footer';
 import JobApplicationModal from './JobApplicationModal';
 import { jobs } from '../data';
 
-const JobsPage = ({ onNavigate }) => {
+const JobsPage = ({ onNavigate, currentUser }) => {
     // Search & Filter State
     const [searchTerm, setSearchTerm] = useState('');
     const [filterLocation, setFilterLocation] = useState('All');
@@ -43,7 +43,8 @@ const JobsPage = ({ onNavigate }) => {
 
     return (
         <div className="dashboard-container">
-            <Navbar onNavigate={onNavigate} currentView="jobs" />
+            <Navbar onNavigate={onNavigate} currentView="jobs" currentUser={currentUser} />
+
 
             <header className="app-header dashboard-header">
                 <h1>Job Opportunities</h1>

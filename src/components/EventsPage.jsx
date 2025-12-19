@@ -5,7 +5,7 @@ import Footer from './Footer';
 import RegistrationModal from './RegistrationModal';
 import { events } from '../data';
 
-const EventsPage = ({ onNavigate }) => {
+const EventsPage = ({ onNavigate, currentUser }) => {
     // Search & Filter State
     const [searchTerm, setSearchTerm] = useState('');
     const [filterLocation, setFilterLocation] = useState('All');
@@ -43,7 +43,7 @@ const EventsPage = ({ onNavigate }) => {
 
     return (
         <div className="dashboard-container">
-            <Navbar onNavigate={onNavigate} currentView="events" />
+            <Navbar onNavigate={onNavigate} currentView="events" currentUser={currentUser} />
 
             <header className="app-header dashboard-header">
                 <h1>Upcoming Events</h1>

@@ -2,28 +2,44 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 
 const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
+    const isRecruiter = initialUser?.role === 'recruiter';
+
     const [user, setUser] = useState(initialUser || {
         name: 'Alex Johnson',
         email: 'alex.johnson@example.com',
+        role: 'seeker',
         title: 'Senior Frontend Developer',
         location: 'Austin, TX',
         bio: 'Passionate about building accessible and performant web applications. Love React, CSS, and coffee.',
-        skills: ['React', 'JavaScript', 'CSS', 'Node.js', 'Figma']
+        skills: ['React', 'JavaScript', 'CSS', 'Node.js', 'Figma'],
+        company: { name: '', position: '' }
     });
 
     const [isEditing, setIsEditing] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUser(prev => ({ ...prev, [name]: value }));
+        if (name.startsWith('company.')) {
+            const field = name.split('.')[1];
+            setUser(prev => ({
+                ...prev,
+                company: { ...prev.company, [field]: value }
+            }));
+        } else {
+            setUser(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleSave = (e) => {
         e.preventDefault();
         setIsEditing(false);
-        // Update user in localStorage
         localStorage.setItem('currentUser', JSON.stringify(user));
-        // Simulate API call
+
+        // Also update in 'users' list to keep consistency
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const updatedUsers = users.map(u => u.email === user.email ? user : u);
+        localStorage.setItem('users', JSON.stringify(updatedUsers));
+
         console.log('User saved:', user);
     };
 
@@ -40,55 +56,85 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
                         </div>
                         <div className="profile-text">
                             <h1 className="profile-name">{user.name}</h1>
-                            <p className="profile-title">{user.title}</p>
+                            <p className="profile-title">
+                                {isRecruiter ? `${user.title} @ ${user.company?.name || 'Your Company'}` : user.title}
+                            </p>
                             <p className="profile-location">📍 {user.location}</p>
                         </div>
-                        <button
-                            className="edit-profile-btn"
-                            onClick={() => setIsEditing(!isEditing)}
-                        >
-                            {isEditing ? 'Cancel Editing' : 'Edit Profile'}
-                        </button>
-                        {onSignOut && (
+                        <div className="profile-actions">
                             <button
-                                className="signout-btn"
-                                onClick={onSignOut}
+                                className="edit-profile-btn"
+                                onClick={() => setIsEditing(!isEditing)}
                             >
-                                Sign Out
+                                {isEditing ? 'Cancel Editing' : 'Edit Profile'}
                             </button>
-                        )}
+                            {onSignOut && (
+                                <button
+                                    className="signout-btn"
+                                    onClick={onSignOut}
+                                >
+                                    Sign Out
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
                 <div className="account-grid">
-                    {/* LEFT COLUMN: Stats & Bio */}
+                    {/* LEFT COLUMN: Stats & Info */}
                     <div className="account-left">
                         <div className="account-card stats-card slide-up-group delay-1">
-                            <h3>Your Activity</h3>
+                            <h3>{isRecruiter ? 'Recruitment Activity' : 'Your Activity'}</h3>
                             <div className="stats-row-small">
-                                <div className="stat-small">
-                                    <span className="stat-val">12</span>
-                                    <span className="stat-lbl">Applied</span>
-                                </div>
-                                <div className="stat-small">
-                                    <span className="stat-val">5</span>
-                                    <span className="stat-lbl">Events</span>
-                                </div>
-                                <div className="stat-small">
-                                    <span className="stat-val">8</span>
-                                    <span className="stat-lbl">Saved</span>
-                                </div>
+                                {isRecruiter ? (
+                                    <>
+                                        <div className="stat-small">
+                                            <span className="stat-val">4</span>
+                                            <span className="stat-lbl">Posted</span>
+                                        </div>
+                                        <div className="stat-small">
+                                            <span className="stat-val">28</span>
+                                            <span className="stat-lbl">Applicants</span>
+                                        </div>
+                                        <div className="stat-small">
+                                            <span className="stat-val">12</span>
+                                            <span className="stat-lbl">Interviews</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="stat-small">
+                                            <span className="stat-val">12</span>
+                                            <span className="stat-lbl">Applied</span>
+                                        </div>
+                                        <div className="stat-small">
+                                            <span className="stat-val">5</span>
+                                            <span className="stat-lbl">Events</span>
+                                        </div>
+                                        <div className="stat-small">
+                                            <span className="stat-val">8</span>
+                                            <span className="stat-lbl">Saved</span>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
 
                         <div className="account-card bio-card slide-up-group delay-2">
-                            <h3>About Me</h3>
+                            <h3>{isRecruiter ? 'Recruiter Bio' : 'About Me'}</h3>
                             <p>{user.bio}</p>
-                            <div className="skills-list">
-                                {user.skills.map((skill, index) => (
-                                    <span key={index} className="skill-tag">{skill}</span>
-                                ))}
-                            </div>
+                            {!isRecruiter && user.skills && (
+                                <div className="skills-list">
+                                    {user.skills.map((skill, index) => (
+                                        <span key={index} className="skill-tag">{skill}</span>
+                                    ))}
+                                </div>
+                            )}
+                            {isRecruiter && user.company?.name && (
+                                <div className="company-info-tag">
+                                    🏢 <strong>Company:</strong> {user.company.name}
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -119,17 +165,48 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
                                         className={!isEditing ? 'disabled-input' : ''}
                                     />
                                 </div>
-                                <div className="form-group">
-                                    <label>Job Title</label>
-                                    <input
-                                        type="text"
-                                        name="title"
-                                        value={user.title}
-                                        onChange={handleChange}
-                                        disabled={!isEditing}
-                                        className={!isEditing ? 'disabled-input' : ''}
-                                    />
-                                </div>
+
+                                {isRecruiter ? (
+                                    <>
+                                        <div className="form-group">
+                                            <label>Company Name</label>
+                                            <input
+                                                type="text"
+                                                name="company.name"
+                                                value={user.company?.name || ''}
+                                                onChange={handleChange}
+                                                disabled={!isEditing}
+                                                className={!isEditing ? 'disabled-input' : ''}
+                                                placeholder="Enter company name"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Your Role in Company</label>
+                                            <input
+                                                type="text"
+                                                name="title"
+                                                value={user.title}
+                                                onChange={handleChange}
+                                                disabled={!isEditing}
+                                                className={!isEditing ? 'disabled-input' : ''}
+                                                placeholder="e.g. Talent Acquisition"
+                                            />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="form-group">
+                                        <label>Job Title / Occupation</label>
+                                        <input
+                                            type="text"
+                                            name="title"
+                                            value={user.title}
+                                            onChange={handleChange}
+                                            disabled={!isEditing}
+                                            className={!isEditing ? 'disabled-input' : ''}
+                                        />
+                                    </div>
+                                )}
+
                                 <div className="form-group">
                                     <label>Location</label>
                                     <input
@@ -139,6 +216,18 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
                                         onChange={handleChange}
                                         disabled={!isEditing}
                                         className={!isEditing ? 'disabled-input' : ''}
+                                    />
+                                </div>
+
+                                <div className="form-group bio-group">
+                                    <label>{isRecruiter ? 'Company/Recruiter Bio' : 'Professional Bio'}</label>
+                                    <textarea
+                                        name="bio"
+                                        value={user.bio}
+                                        onChange={handleChange}
+                                        disabled={!isEditing}
+                                        className={!isEditing ? 'disabled-input' : ''}
+                                        rows="4"
                                     />
                                 </div>
 
