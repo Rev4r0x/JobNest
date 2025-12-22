@@ -6,6 +6,10 @@ const ProfessionalsPage = ({ onNavigate, currentUser }) => {
     const [bookings, setBookings] = useState([]);
 
     useEffect(() => {
+        loadProfessionalsAndBookings();
+    }, [currentUser]);
+
+    const loadProfessionalsAndBookings = () => {
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         const profsData = JSON.parse(localStorage.getItem('professionals') || '[]');
         const bookingsData = JSON.parse(localStorage.getItem('bookings') || '[]');
@@ -20,10 +24,11 @@ const ProfessionalsPage = ({ onNavigate, currentUser }) => {
 
         setProfessionals(profs);
         setBookings(bookingsData);
-    }, [currentUser]);
+    };
 
     const handleBook = (professional) => {
-        const existingBooking = bookings.find(
+        const currentBookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+        const existingBooking = currentBookings.find(
             b => b.professionalEmail === professional.email && 
                  b.userId === currentUser.email
         );
@@ -40,9 +45,10 @@ const ProfessionalsPage = ({ onNavigate, currentUser }) => {
             bookedAt: new Date().toISOString()
         };
 
-        const updatedBookings = [...bookings, newBooking];
+        const updatedBookings = [...currentBookings, newBooking];
         localStorage.setItem('bookings', JSON.stringify(updatedBookings));
         setBookings(updatedBookings);
+        loadProfessionalsAndBookings();
         alert('Booking confirmed!');
     };
 

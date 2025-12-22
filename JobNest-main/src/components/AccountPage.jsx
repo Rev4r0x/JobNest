@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 
 const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut, setCurrentUser }) => {
@@ -28,6 +28,22 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut, setCurre
     });
 
     const [isEditing, setIsEditing] = useState(false);
+
+    // Load professional data from localStorage on mount
+    useEffect(() => {
+        const professionals = JSON.parse(localStorage.getItem('professionals') || '[]');
+        const profData = professionals.find(p => p.email === user.email);
+        
+        if (profData) {
+            setUser(prev => ({
+                ...prev,
+                isProfessional: true,
+                skill: profData.skill,
+                fee: profData.fee,
+                availability: profData.availability
+            }));
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
