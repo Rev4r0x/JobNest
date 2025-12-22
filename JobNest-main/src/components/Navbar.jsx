@@ -23,6 +23,8 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
             onNavigate('signup');
         } else if (target === 'network') {
             onNavigate('network');
+        } else if (target === 'feed') {
+            onNavigate('feed');
         }
     };
 
@@ -71,6 +73,12 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
                         ) : (
                             // Full Nav for authenticated users
                             <>
+                                <li
+                                    className={currentView === 'feed' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('feed')}
+                                >
+                                    Feed
+                                </li>
                                 <li
                                     className={currentView === 'jobs' ? 'active-link' : ''}
                                     onClick={() => handleNavClick('jobs')}
