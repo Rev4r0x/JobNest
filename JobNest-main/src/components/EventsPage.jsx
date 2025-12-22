@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import EventCard from './EventCard';
 import Footer from './Footer';
 import RegistrationModal from './RegistrationModal';
-import { events } from '../data';
+import { events as defaultEvents } from '../data';
 
 const EventsPage = ({ onNavigate, currentUser }) => {
     // Search & Filter State
@@ -15,6 +15,24 @@ const EventsPage = ({ onNavigate, currentUser }) => {
     const [isEventModalOpen, setIsEventModalOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
 
+    // Events State
+    const [events, setEvents] = useState([]);
+
+    // Load events from localStorage on mount
+    useEffect(() => {
+        const storedEvents = JSON.parse(localStorage.getItem('events') || 'null');
+        const eventsData = storedEvents || defaultEvents;
+        
+        // Sort by date (upcoming first)
+        const sorted = eventsData.sort((a, b) => {
+            const dateA = new Date(a.date || 0);
+            const dateB = new Date(b.date || 0);
+            return dateA - dateB;
+        });
+        
+        setEvents(sorted);
+    }, []);
+
     // Extract Unique Locations and categories
     const allLocations = ['All', ...new Set(events.map(e => e.location))];
     const eventCategories = ['All', 'Networking', 'Workshop', 'Conference', 'Webinar'];
@@ -22,7 +40,7 @@ const EventsPage = ({ onNavigate, currentUser }) => {
     // Filter Logic
     const filteredEvents = events.filter(event => {
         const matchesSearch =
-            event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (event.name || event.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
             event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
             event.description.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesLocation = filterLocation === 'All' || event.location === filterLocation;
