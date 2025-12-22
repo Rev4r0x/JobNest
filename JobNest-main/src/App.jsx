@@ -11,6 +11,7 @@ import JobsPage from './components/JobsPage';
 import EventsPage from './components/EventsPage';
 import PlacementsPage from './components/PlacementsPage';
 import PricingPage from './components/PricingPage';
+import NetworkPage from './components/NetworkPage';
 
 function App() {
     // Authentication state
@@ -117,6 +118,13 @@ function App() {
                         </div>
                     </React.Fragment>
                 );
+            case 'network':
+                // Protect network route
+                if (!isAuthenticated) {
+                    navigateTo('signin');
+                    return <SignInPage onNavigate={navigateTo} onSignIn={handleSignIn} />;
+                }
+                return <NetworkPage onNavigate={navigateTo} currentUser={currentUser} />;
             default:
                 return <LandingPage onStart={() => navigateTo('dashboard')} onNavigate={navigateTo} currentUser={currentUser} />;
         }

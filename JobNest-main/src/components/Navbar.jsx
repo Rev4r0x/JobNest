@@ -21,6 +21,8 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
             onNavigate('signin');
         } else if (target === 'signup') {
             onNavigate('signup');
+        } else if (target === 'network') {
+            onNavigate('network');
         }
     };
 
@@ -86,6 +88,12 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
                                     onClick={() => handleNavClick('events')}
                                 >
                                     Events
+                                </li>
+                                <li
+                                    className={currentView === 'network' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('network')}
+                                >
+                                    Network
                                 </li>
                                 <li
                                     className={currentView === 'about' ? 'active-link' : ''}
