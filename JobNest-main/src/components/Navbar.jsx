@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Navbar = ({ onNavigate, currentView, currentUser }) => {
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleNavClick = (target) => {
         if (target === 'home') {
@@ -32,6 +33,7 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
         } else if (target === 'announcements') {
             onNavigate('announcements');
         }
+        setDropdownOpen(false);
     };
 
     // Check if we're on auth pages
@@ -86,22 +88,10 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
                                     Feed
                                 </li>
                                 <li
-                                    className={currentView === 'messages' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('messages')}
+                                    className={currentView === 'network' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('network')}
                                 >
-                                    Messages
-                                </li>
-                                <li
-                                    className={currentView === 'professionals' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('professionals')}
-                                >
-                                    Professionals
-                                </li>
-                                <li
-                                    className={currentView === 'announcements' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('announcements')}
-                                >
-                                    Announcements
+                                    Network
                                 </li>
                                 <li
                                     className={currentView === 'jobs' ? 'active-link' : ''}
@@ -110,41 +100,37 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
                                     {isRecruiter ? 'Manage Jobs' : 'Find Jobs'}
                                 </li>
                                 <li
-                                    className={currentView === 'placements' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('placements')}
+                                    className={currentView === 'messages' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('messages')}
                                 >
-                                    Placements
+                                    Messages
                                 </li>
-                                <li
-                                    className={currentView === 'events' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('events')}
-                                >
-                                    Events
+
+                                <li className="dropdown-item">
+                                    <button 
+                                        className="dropdown-btn"
+                                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                                    >
+                                        More ▼
+                                    </button>
+                                    {dropdownOpen && (
+                                        <ul className="dropdown-menu">
+                                            <li onClick={() => handleNavClick('professionals')}>
+                                                Professionals
+                                            </li>
+                                            <li onClick={() => handleNavClick('events')}>
+                                                Events
+                                            </li>
+                                            <li onClick={() => handleNavClick('announcements')}>
+                                                Announcements
+                                            </li>
+                                            <li onClick={() => handleNavClick('placements')}>
+                                                My Bookings
+                                            </li>
+                                        </ul>
+                                    )}
                                 </li>
-                                <li
-                                    className={currentView === 'network' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('network')}
-                                >
-                                    Network
-                                </li>
-                                <li
-                                    className={currentView === 'about' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('about')}
-                                >
-                                    About
-                                </li>
-                                <li
-                                    className={currentView === 'contact' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('contact')}
-                                >
-                                    Contact
-                                </li>
-                                <li
-                                    className={currentView === 'pricing' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('pricing')}
-                                >
-                                    Pricing
-                                </li>
+
                                 <li className="nav-btn" onClick={() => handleNavClick('home')}>Home</li>
                                 <li
                                     className={currentView === 'account' ? 'active-link account-icon' : 'account-icon'}
@@ -167,5 +153,53 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
         </nav>
     );
 };
+
+const styles = `
+    .dropdown-item {
+        position: relative;
+        list-style: none;
+    }
+
+    .dropdown-btn {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 8px 0;
+        font-weight: 500;
+    }
+
+    .dropdown-btn:hover {
+        color: #667eea;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        list-style: none;
+        margin: 8px 0 0 0;
+        padding: 8px 0;
+        min-width: 180px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+
+    .dropdown-menu li {
+        padding: 12px 16px;
+        cursor: pointer;
+        color: #333;
+        transition: all 0.2s;
+    }
+
+    .dropdown-menu li:hover {
+        background: #f5f5f5;
+        color: #667eea;
+    }
+`;
 
 export default Navbar;
