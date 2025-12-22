@@ -29,8 +29,31 @@ const JobApplicationModal = ({ isOpen, onClose, job }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // In a real app, this would send data to a backend
-        console.log(`Application for ${job.title} at ${job.company}:`, formData);
+        
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+        
+        // Check if already applied
+        const alreadyApplied = applications.some(
+            app => app.jobId === job.id && app.userId === currentUser.email
+        );
+        
+        if (alreadyApplied) {
+            alert('You have already applied for this job');
+            return;
+        }
+        
+        // Save application
+        const newApplication = {
+            jobId: job.id,
+            userId: currentUser.email,
+            appliedAt: new Date().toISOString(),
+            ...formData
+        };
+        
+        applications.push(newApplication);
+        localStorage.setItem('applications', JSON.stringify(applications));
+        
         setIsSubmitted(true);
     };
 

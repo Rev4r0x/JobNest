@@ -108,7 +108,7 @@ const JobsPage = ({ onNavigate, currentUser }) => {
                         <h2 className="section-title">Available Positions ({filteredJobs.length})</h2>
                         <div className="cards-grid">
                             {filteredJobs.map((job) => (
-                                <JobCard key={job.id} job={job} onApply={handleApplyClick} />
+                                <JobCard key={job.id} job={job} onApply={handleApplyClick} currentUser={currentUser} />
                             ))}
                         </div>
                         {filteredJobs.length === 0 && (
