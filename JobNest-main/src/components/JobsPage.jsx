@@ -120,8 +120,8 @@ const JobsPage = ({ onNavigate, currentUser }) => {
 
             <Footer onNavigate={onNavigate} />
 
-            {isJobModalOpen && selectedJob && (
-                <JobApplicationModal job={selectedJob} onClose={handleCloseJobModal} />
+            {selectedJob && (
+                <JobApplicationModal isOpen={isJobModalOpen} job={selectedJob} onClose={handleCloseJobModal} />
             )}
         </div>
     );
