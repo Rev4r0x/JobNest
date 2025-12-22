@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar';
 
-const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
+const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut, setCurrentUser }) => {
     const isRecruiter = initialUser?.role === 'recruiter';
 
     const [user, setUser] = useState(initialUser || {
@@ -12,7 +12,15 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
         location: 'Austin, TX',
         bio: 'Passionate about building accessible and performant web applications. Love React, CSS, and coffee.',
         skills: ['React', 'JavaScript', 'CSS', 'Node.js', 'Figma'],
-        company: { name: '', position: '' }
+        company: { name: '', position: '' },
+        profile: {
+            headline: '',
+            about: '',
+            skills: [],
+            experience: [],
+            education: [],
+            profilePhoto: ''
+        }
     });
 
     const [isEditing, setIsEditing] = useState(false);
@@ -40,6 +48,7 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
         const updatedUsers = users.map(u => u.email === user.email ? user : u);
         localStorage.setItem('users', JSON.stringify(updatedUsers));
 
+        if (setCurrentUser) setCurrentUser(user);
         console.log('User saved:', user);
     };
 
@@ -236,6 +245,101 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut }) => {
                                         Save Changes
                                     </button>
                                 )}
+                            </form>
+                        </div>
+
+                        <div className="account-card profile-card slide-up-group delay-4">
+                            <h3>LinkedIn-Style Profile</h3>
+                            <form className="profile-form">
+                                <div className="form-group">
+                                    <label>Professional Headline</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g. Senior Developer | Tech Lead"
+                                        value={user.profile?.headline || ''}
+                                        onChange={(e) => setUser(prev => ({
+                                            ...prev,
+                                            profile: { ...prev.profile, headline: e.target.value }
+                                        }))}
+                                        disabled={!isEditing}
+                                        className={!isEditing ? 'disabled-input' : ''}
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>About</label>
+                                    <textarea
+                                        placeholder="Tell more about yourself..."
+                                        value={user.profile?.about || ''}
+                                        onChange={(e) => setUser(prev => ({
+                                            ...prev,
+                                            profile: { ...prev.profile, about: e.target.value }
+                                        }))}
+                                        disabled={!isEditing}
+                                        className={!isEditing ? 'disabled-input' : ''}
+                                        rows="3"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Profile Photo URL</label>
+                                    <input
+                                        type="text"
+                                        placeholder="https://example.com/photo.jpg"
+                                        value={user.profile?.profilePhoto || ''}
+                                        onChange={(e) => setUser(prev => ({
+                                            ...prev,
+                                            profile: { ...prev.profile, profilePhoto: e.target.value }
+                                        }))}
+                                        disabled={!isEditing}
+                                        className={!isEditing ? 'disabled-input' : ''}
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Experience</label>
+                                    <textarea
+                                        placeholder="e.g. Senior Developer at TechCorp (2020-2024)"
+                                        value={user.profile?.experience?.join('\n') || ''}
+                                        onChange={(e) => setUser(prev => ({
+                                            ...prev,
+                                            profile: { ...prev.profile, experience: e.target.value.split('\n').filter(x => x.trim()) }
+                                        }))}
+                                        disabled={!isEditing}
+                                        className={!isEditing ? 'disabled-input' : ''}
+                                        rows="3"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Education</label>
+                                    <textarea
+                                        placeholder="e.g. B.S. Computer Science - University (2020)"
+                                        value={user.profile?.education?.join('\n') || ''}
+                                        onChange={(e) => setUser(prev => ({
+                                            ...prev,
+                                            profile: { ...prev.profile, education: e.target.value.split('\n').filter(x => x.trim()) }
+                                        }))}
+                                        disabled={!isEditing}
+                                        className={!isEditing ? 'disabled-input' : ''}
+                                        rows="3"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Skills (comma-separated)</label>
+                                    <input
+                                        type="text"
+                                        placeholder="React, Node.js, JavaScript"
+                                        value={user.profile?.skills?.join(', ') || ''}
+                                        onChange={(e) => setUser(prev => ({
+                                            ...prev,
+                                            profile: { ...prev.profile, skills: e.target.value.split(',').map(s => s.trim()).filter(x => x) }
+                                        }))}
+                                        disabled={!isEditing}
+                                        className={!isEditing ? 'disabled-input' : ''}
+                                    />
+                                </div>
                             </form>
                         </div>
                     </div>

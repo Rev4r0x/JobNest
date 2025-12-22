@@ -11,7 +11,6 @@ import JobsPage from './components/JobsPage';
 import EventsPage from './components/EventsPage';
 import PlacementsPage from './components/PlacementsPage';
 import PricingPage from './components/PricingPage';
-import ProfilePage from './components/ProfilePage';
 
 function App() {
     // Authentication state
@@ -83,11 +82,6 @@ function App() {
         window.scrollTo(0, 0);
     };
 
-    // Handle profile update
-    const handleProfileUpdate = (updatedUser) => {
-        setCurrentUser(updatedUser);
-    };
-
     const renderView = () => {
         switch (view) {
             case 'landing':
@@ -119,17 +113,10 @@ function App() {
                 return (
                     <React.Fragment>
                         <div style={{ minHeight: '100vh', background: '#f8f9fa' }}>
-                            <AccountPage onNavigate={navigateTo} currentUser={currentUser} onSignOut={handleSignOut} />
+                            <AccountPage onNavigate={navigateTo} currentUser={currentUser} onSignOut={handleSignOut} setCurrentUser={setCurrentUser} />
                         </div>
                     </React.Fragment>
                 );
-            case 'profile':
-                // Protect profile route
-                if (!isAuthenticated) {
-                    navigateTo('signin');
-                    return <SignInPage onNavigate={navigateTo} onSignIn={handleSignIn} />;
-                }
-                return <ProfilePage onNavigate={navigateTo} currentUser={currentUser} onProfileUpdate={handleProfileUpdate} />;
             default:
                 return <LandingPage onStart={() => navigateTo('dashboard')} onNavigate={navigateTo} currentUser={currentUser} />;
         }

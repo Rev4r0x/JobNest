@@ -21,8 +21,6 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
             onNavigate('signin');
         } else if (target === 'signup') {
             onNavigate('signup');
-        } else if (target === 'profile') {
-            onNavigate('profile');
         }
     };
 
@@ -109,16 +107,9 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
                                 </li>
                                 <li className="nav-btn" onClick={() => handleNavClick('home')}>Home</li>
                                 <li
-                                    className={currentView === 'profile' ? 'active-link' : ''}
-                                    onClick={() => handleNavClick('profile')}
-                                    title="Profile"
-                                >
-                                    Profile
-                                </li>
-                                <li
                                     className={currentView === 'account' ? 'active-link account-icon' : 'account-icon'}
                                     onClick={() => onNavigate('account')}
-                                    title="Account"
+                                    title="Profile"
                                 >
                                     <div className="nav-user-info">
                                         <span className="nav-user-name">{currentUser?.name?.split(' ')[0]}</span>
