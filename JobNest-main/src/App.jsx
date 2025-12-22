@@ -15,6 +15,7 @@ import NetworkPage from './components/NetworkPage';
 import FeedPage from './components/FeedPage';
 import MessagesPage from './components/MessagesPage';
 import ProfessionalsPage from './components/ProfessionalsPage';
+import AnnouncementsPage from './components/AnnouncementsPage';
 
 function App() {
     // Authentication state
@@ -149,6 +150,13 @@ function App() {
                     return <SignInPage onNavigate={navigateTo} onSignIn={handleSignIn} />;
                 }
                 return <ProfessionalsPage onNavigate={navigateTo} currentUser={currentUser} />;
+            case 'announcements':
+                // Protect announcements route
+                if (!isAuthenticated) {
+                    navigateTo('signin');
+                    return <SignInPage onNavigate={navigateTo} onSignIn={handleSignIn} />;
+                }
+                return <AnnouncementsPage onNavigate={navigateTo} currentUser={currentUser} />;
             default:
                 return <LandingPage onStart={() => navigateTo('dashboard')} onNavigate={navigateTo} currentUser={currentUser} />;
         }

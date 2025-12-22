@@ -29,6 +29,8 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
             onNavigate('messages');
         } else if (target === 'professionals') {
             onNavigate('professionals');
+        } else if (target === 'announcements') {
+            onNavigate('announcements');
         }
     };
 
@@ -94,6 +96,12 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
                                     onClick={() => handleNavClick('professionals')}
                                 >
                                     Professionals
+                                </li>
+                                <li
+                                    className={currentView === 'announcements' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('announcements')}
+                                >
+                                    Announcements
                                 </li>
                                 <li
                                     className={currentView === 'jobs' ? 'active-link' : ''}
