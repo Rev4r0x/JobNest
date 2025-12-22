@@ -27,6 +27,8 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
             onNavigate('feed');
         } else if (target === 'messages') {
             onNavigate('messages');
+        } else if (target === 'professionals') {
+            onNavigate('professionals');
         }
     };
 
@@ -86,6 +88,12 @@ const Navbar = ({ onNavigate, currentView, currentUser }) => {
                                     onClick={() => handleNavClick('messages')}
                                 >
                                     Messages
+                                </li>
+                                <li
+                                    className={currentView === 'professionals' ? 'active-link' : ''}
+                                    onClick={() => handleNavClick('professionals')}
+                                >
+                                    Professionals
                                 </li>
                                 <li
                                     className={currentView === 'jobs' ? 'active-link' : ''}

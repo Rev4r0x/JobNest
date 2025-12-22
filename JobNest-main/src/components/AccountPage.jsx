@@ -20,7 +20,11 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut, setCurre
             experience: [],
             education: [],
             profilePhoto: ''
-        }
+        },
+        isProfessional: false,
+        skill: '',
+        fee: '',
+        availability: ''
     });
 
     const [isEditing, setIsEditing] = useState(false);
@@ -47,6 +51,25 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut, setCurre
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         const updatedUsers = users.map(u => u.email === user.email ? user : u);
         localStorage.setItem('users', JSON.stringify(updatedUsers));
+
+        // Save professional info if registered
+        if (user.isProfessional) {
+            const professionals = JSON.parse(localStorage.getItem('professionals') || '[]');
+            const profExist = professionals.find(p => p.email === user.email);
+            const profData = {
+                email: user.email,
+                skill: user.skill,
+                fee: user.fee,
+                availability: user.availability
+            };
+            if (profExist) {
+                const updated = professionals.map(p => p.email === user.email ? profData : p);
+                localStorage.setItem('professionals', JSON.stringify(updated));
+            } else {
+                professionals.push(profData);
+                localStorage.setItem('professionals', JSON.stringify(professionals));
+            }
+        }
 
         if (setCurrentUser) setCurrentUser(user);
         console.log('User saved:', user);
@@ -340,6 +363,62 @@ const AccountPage = ({ onNavigate, currentUser: initialUser, onSignOut, setCurre
                                         className={!isEditing ? 'disabled-input' : ''}
                                     />
                                 </div>
+
+                                <div className="form-group">
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <input
+                                            type="checkbox"
+                                            name="isProfessional"
+                                            checked={user.isProfessional || false}
+                                            onChange={(e) => setUser(prev => ({ ...prev, isProfessional: e.target.checked }))}
+                                            disabled={!isEditing}
+                                        />
+                                        Register as Professional
+                                    </label>
+                                </div>
+
+                                {user.isProfessional && (
+                                    <>
+                                        <div className="form-group">
+                                            <label>Professional Skill</label>
+                                            <input
+                                                type="text"
+                                                name="skill"
+                                                placeholder="e.g. Web Development, UI Design"
+                                                value={user.skill || ''}
+                                                onChange={(e) => setUser(prev => ({ ...prev, skill: e.target.value }))}
+                                                disabled={!isEditing}
+                                                className={!isEditing ? 'disabled-input' : ''}
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label>Hourly Fee</label>
+                                            <input
+                                                type="number"
+                                                name="fee"
+                                                placeholder="e.g. 50"
+                                                value={user.fee || ''}
+                                                onChange={(e) => setUser(prev => ({ ...prev, fee: e.target.value }))}
+                                                disabled={!isEditing}
+                                                className={!isEditing ? 'disabled-input' : ''}
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label>Availability</label>
+                                            <input
+                                                type="text"
+                                                name="availability"
+                                                placeholder="e.g. Weekdays 9-5"
+                                                value={user.availability || ''}
+                                                onChange={(e) => setUser(prev => ({ ...prev, availability: e.target.value }))}
+                                                disabled={!isEditing}
+                                                className={!isEditing ? 'disabled-input' : ''}
+                                            />
+                                        </div>
+                                    </>
+                                )}
                             </form>
                         </div>
                     </div>
