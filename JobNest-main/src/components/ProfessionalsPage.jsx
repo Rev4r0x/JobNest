@@ -26,6 +26,24 @@ const ProfessionalsPage = ({ onNavigate, currentUser }) => {
         setBookings(bookingsData);
     };
 
+    const getMyBookings = () => {
+        return bookings.filter(b => b.userId === currentUser.email);
+    };
+
+    const getBookingsReceived = () => {
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        return bookings.filter(b => b.professionalEmail === currentUser.email).map(b => {
+            const user = users.find(u => u.email === b.userId);
+            return { ...b, userName: user?.name || 'Unknown' };
+        });
+    };
+
+    const formatDate = (timestamp) => {
+        return new Date(timestamp).toLocaleDateString();
+    };
+
+    const isProfessional = bookings.some(b => b.professionalEmail === currentUser.email);
+
     const handleBook = (professional) => {
         const currentBookings = JSON.parse(localStorage.getItem('bookings') || '[]');
         const existingBooking = currentBookings.find(
@@ -57,6 +75,38 @@ const ProfessionalsPage = ({ onNavigate, currentUser }) => {
             <Navbar onNavigate={onNavigate} currentView="professionals" currentUser={currentUser} />
 
             <div className="professionals-container">
+                {isProfessional && getBookingsReceived().length > 0 && (
+                    <div className="bookings-section">
+                        <h2>Bookings Received</h2>
+                        <div className="bookings-list">
+                            {getBookingsReceived().map((booking, idx) => (
+                                <div key={idx} className="booking-item">
+                                    <div className="booking-info">
+                                        <p className="booking-user">{booking.userName}</p>
+                                        <p className="booking-date">Booked on {formatDate(booking.bookedAt)}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {getMyBookings().length > 0 && (
+                    <div className="bookings-section">
+                        <h2>My Bookings</h2>
+                        <div className="bookings-list">
+                            {getMyBookings().map((booking, idx) => (
+                                <div key={idx} className="booking-item">
+                                    <div className="booking-info">
+                                        <p className="booking-user">{booking.professionalName}</p>
+                                        <p className="booking-date">Booked on {formatDate(booking.bookedAt)}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 <h1>Professional Services</h1>
                 <p>Connect with skilled professionals for freelance work</p>
 
@@ -194,6 +244,53 @@ const ProfessionalsPage = ({ onNavigate, currentUser }) => {
 
                 .book-btn:hover {
                     background: #5568d3;
+                }
+
+                .bookings-section {
+                    margin-bottom: 40px;
+                    padding: 24px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                }
+
+                .bookings-section h2 {
+                    margin: 0 0 20px 0;
+                    font-size: 24px;
+                    color: #333;
+                }
+
+                .bookings-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .booking-item {
+                    padding: 16px;
+                    background: #f9f9f9;
+                    border-left: 4px solid #667eea;
+                    border-radius: 4px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .booking-info {
+                    flex: 1;
+                }
+
+                .booking-user {
+                    margin: 0;
+                    font-weight: 600;
+                    color: #333;
+                    font-size: 15px;
+                }
+
+                .booking-date {
+                    margin: 4px 0 0 0;
+                    color: #666;
+                    font-size: 13px;
                 }
             `}</style>
         </div>
