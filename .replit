@@ -36,5 +36,5 @@ externalPort = 80
 
 [deployment]
 deploymentTarget = "static"
-build = ["bash", "-c", "cd JobNest-main && npm run build"]
-publicDir = "JobNest-main/dist"
+build = ["npm", "run", "build"]
+publicDir = "dist"
