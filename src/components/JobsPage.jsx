@@ -17,7 +17,7 @@ const JobsPage = ({ onNavigate, currentUser }) => {
 
     // Extract Unique Locations and Categories
     const allLocations = ['All', ...new Set(jobs.map(j => j.location))];
-    const jobCategories = ['All', 'Full-time', 'Part-time', 'Remote', 'Contract', 'Internship'];
+    const jobCategories = ['All', 'Full-time', 'Part-time', 'Remote', 'Contract', 'Internship', 'Freelance', 'Temporary', 'Graduate'];
 
     // Filter Logic
     const filteredJobs = jobs.filter(job => {

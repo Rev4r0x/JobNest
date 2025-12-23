@@ -93,6 +93,51 @@ export const jobs = [
         type: "Part-time",
         description: "Develop and execute social media marketing strategies to grow our online presence.",
         image: job2
+    },
+    {
+        id: 11,
+        title: "Freelance Graphic Designer",
+        company: "Creative Hub",
+        location: "Remote",
+        type: "Freelance",
+        description: "Join our network of freelance designers to create stunning visuals for diverse projects.",
+        image: job1
+    },
+    {
+        id: 12,
+        title: "Temporary Warehouse Associate",
+        company: "LogiTech Solutions",
+        location: "Los Angeles, CA",
+        type: "Temporary",
+        description: "Help us manage inventory and fulfill orders during our busy season.",
+        image: job2
+    },
+    {
+        id: 13,
+        title: "Graduate Software Engineer",
+        company: "Innovation Labs",
+        location: "Boston, MA",
+        type: "Graduate",
+        description: "Launch your career with our structured graduate program for fresh graduates.",
+        image: job1
+    },
+    {
+        id: 14,
+        title: "Freelance Content Writer",
+        company: "Digital Agency Pro",
+        location: "Remote",
+        type: "Freelance",
+        description: "Write compelling content for blogs, websites, and marketing campaigns.",
+        image: job2
+    },
+    {
+        id: 15,
+        title: "Temporary Event Coordinator",
+        company: "Event Masters",
+        location: "Miami, FL",
+        type: "Temporary",
+        description: "Coordinate and manage events for our high-profile clients during peak season.",
+        image: job1
     }
 ];
 
